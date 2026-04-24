@@ -11,12 +11,13 @@
         body { font-family: 'IBM Plex Sans Thai', sans-serif; }
         .page { display: none; }
         .page.active { display: block; }
-        .loading { pointer-events: none; opacity: 0.6; }
+        .loading-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
 <body class="bg-gray-50 flex justify-center">
 
-    <div class="w-full max-w-md bg-white min-h-screen relative shadow-lg">
+    <div class="w-full max-w-md bg-white min-h-screen relative shadow-lg pb-24">
         
         <div id="home-page" class="page active">
             <header class="p-6">
@@ -28,69 +29,81 @@
                     </div>
                 </div>
                 
-                <h2 class="font-bold text-gray-400 text-[10px] tracking-widest uppercase mb-4">เลือกวันที่ต้องการลงชื่อ</h2>
+                <h2 class="font-bold text-gray-400 text-[10px] tracking-widest uppercase mb-4 text-center">เลือกวันที่จะเข้าเล่น</h2>
                 
-                <div class="space-y-4">
-                    <div onclick="selectDate('วันอังคาร')" class="bg-white border border-gray-100 rounded-[24px] p-5 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-transform">
+                <div class="grid grid-cols-1 gap-4">
+                    <div onclick="selectDate('วันอังคาร')" class="bg-white border border-gray-100 rounded-[24px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all hover:border-blue-200">
                         <div>
                             <p class="font-bold text-lg text-slate-800">วันอังคาร</p>
                             <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00</p>
                         </div>
-                        <div class="text-right text-gray-400">➡️</div>
+                        <div class="bg-blue-50 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center">→</div>
                     </div>
 
-                    <div onclick="selectDate('วันพฤหัสบดี')" class="bg-white border border-gray-100 rounded-[24px] p-5 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-transform">
+                    <div onclick="selectDate('วันพฤหัสบดี')" class="bg-white border border-gray-100 rounded-[24px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all hover:border-blue-200">
                         <div>
                             <p class="font-bold text-lg text-slate-800">วันพฤหัสบดี</p>
                             <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00</p>
                         </div>
-                        <div class="text-right text-gray-400">➡️</div>
+                        <div class="bg-blue-50 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center">→</div>
                     </div>
                 </div>
             </header>
         </div>
 
         <div id="booking-page" class="page">
-            <nav class="p-6 flex items-center gap-4">
-                <button onclick="goToPage('home')" class="text-2xl">←</button>
-                <h1 class="text-xl font-bold">ยืนยันการลงชื่อ</h1>
+            <nav class="p-6 flex items-center gap-4 sticky top-0 bg-white z-10 border-b">
+                <button onclick="goToPage('home')" class="text-2xl w-10 h-10 flex items-center justify-center bg-gray-50 rounded-full">←</button>
+                <h1 class="text-xl font-bold">ลงชื่อเข้าเล่น</h1>
             </nav>
-            <div class="px-6 space-y-6">
-                <div class="bg-slate-900 text-white rounded-[30px] p-6 shadow-xl">
+            
+            <div class="p-6 space-y-6">
+                <div class="bg-slate-900 text-white rounded-[30px] p-6 shadow-xl relative overflow-hidden">
                     <h2 id="selected-day-label" class="text-2xl font-bold mb-1">-</h2>
-                    <p class="text-slate-400 text-sm mb-6">สนาม Bouncy Badminton (09:00 - 11:00)</p>
-                    <div class="bg-slate-800 rounded-2xl p-4 text-center">
-                        <p class="text-xs text-slate-400">สมาชิกในกลุ่ม</p>
-                        <p class="text-xl font-bold">66 คน</p>
+                    <p class="text-slate-400 text-xs mb-6 uppercase tracking-wider">Bouncy Badminton (09:00 - 11:00)</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/5">
+                            <p class="text-[10px] text-slate-400">ลงชื่อแล้ว</p>
+                            <p id="member-count" class="text-xl font-bold">0 คน</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/5">
+                            <p class="text-[10px] text-slate-400">ใช้สนาม</p>
+                            <p id="court-count" class="text-xl font-bold">0 คอร์ท</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-[24px] p-6 space-y-4 shadow-sm">
-                    <p class="text-sm text-gray-500 leading-relaxed text-center italic">
-                        "ระบบจะบันทึกชื่อ LINE ของคุณลงในตาราง<br>และคำนวณจำนวนสนามให้อัตโนมัติ"
-                    </p>
-                    <button id="btn-confirm" onclick="confirmBooking()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">ลงชื่อเล่นรอบนี้</button>
+                <div class="bg-white border border-gray-100 rounded-[24px] p-5 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-sm mb-4 border-b pb-2">รายชื่อสมาชิกที่ลงแล้ว</h3>
+                    <div id="member-list" class="space-y-2 max-h-64 overflow-y-auto pr-2">
+                        </div>
+                </div>
+
+                <div class="bg-white border-t border-gray-50 fixed bottom-20 left-0 w-full p-4 max-w-md ml-auto mr-auto">
+                    <button id="btn-confirm" onclick="confirmBooking()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+                        ลงชื่อเล่นรอบนี้ 🏸
+                    </button>
                 </div>
             </div>
         </div>
 
-        <nav class="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-50 flex justify-around py-3 pb-8">
+        <nav class="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-100 flex justify-around py-3 pb-8 z-20">
             <button onclick="goToPage('home')" class="flex flex-col items-center gap-1 text-blue-600">
                 <span class="text-xl">🏠</span>
                 <span class="text-[10px] font-bold">หน้าหลัก</span>
             </button>
             <button onclick="goToPage('home')" class="flex flex-col items-center gap-1 text-gray-300">
-                <span class="text-xl">📅</span>
-                <span class="text-[10px] font-bold">ลงชื่อ</span>
+                <span class="text-xl">📊</span>
+                <span class="text-[10px] font-bold">สถิติ</span>
             </button>
         </nav>
     </div>
 
     <script>
         const liffId = "2009890406-XhexEJs4";
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwiK8N55ZkQo6Nzuh8NwFlUlxhm1RXApVXNvf-Yt5RG17GtWqmX6vXhkFX1RFViZec7/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzfi1zDCSMD8JGC5MHcyVOvWR-_gxaR5j2GZ8dA6-PlfateyHHh_9cJwfC3pQ-66nq_/exec";
         
-        let userName = "";
+        let userName = "ผู้ใช้งาน";
         let selectedDay = "";
 
         async function initLiff() {
@@ -103,13 +116,51 @@
                 } else {
                     liff.login();
                 }
-            } catch (err) { console.error(err); }
+            } catch (err) { console.error("LIFF Init Error:", err); }
+        }
+
+        // ดึงข้อมูลรายชื่อจาก Google Sheets
+        async function fetchMembers(day) {
+            const listContainer = document.getElementById('member-list');
+            listContainer.innerHTML = `<div class="loading-pulse text-center text-gray-400 text-xs py-4">กำลังดึงข้อมูลล่าสุด...</div>`;
+            
+            try {
+                const response = await fetch(scriptURL);
+                const data = await response.json();
+                
+                // กรองเฉพาะคนที่ลงวันตรงกัน
+                const filtered = data.filter(item => item.day === day);
+                
+                if (filtered.length === 0) {
+                    listContainer.innerHTML = `<div class="text-center text-gray-400 text-xs py-4">ยังไม่มีใครลงชื่อ คุณจะเป็นคนแรก!</div>`;
+                } else {
+                    listContainer.innerHTML = filtered.map((item, index) => `
+                        <div class="flex justify-between items-center py-3 border-b border-gray-50 last:border-0">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-bold text-blue-500">${index + 1}.</span>
+                                <span class="text-sm font-semibold text-slate-700">${item.name}</span>
+                            </div>
+                            <span class="text-[9px] bg-green-100 text-green-600 px-2 py-0.5 rounded-md font-bold uppercase">Ready</span>
+                        </div>
+                    `).join('');
+                }
+                
+                // คำนวณคอร์ท (4 คนต่อ 1 คอร์ท)
+                const count = filtered.length;
+                document.getElementById('member-count').innerText = count + " คน";
+                document.getElementById('court-count').innerText = Math.ceil(count / 4) + " คอร์ท";
+
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                listContainer.innerHTML = `<div class="text-center text-red-400 text-xs py-4">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>`;
+            }
         }
 
         function selectDate(day) {
             selectedDay = day;
             document.getElementById('selected-day-label').innerText = day;
             goToPage('booking');
+            fetchMembers(day);
         }
 
         function goToPage(pageId) {
@@ -120,8 +171,11 @@
 
         async function confirmBooking() {
             const btn = document.getElementById('btn-confirm');
-            btn.innerText = "กำลังบันทึก...";
-            btn.classList.add('loading');
+            const originalText = btn.innerHTML;
+            
+            btn.innerText = "กำลังบันทึกข้อมูล...";
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
 
             const payload = {
                 name: userName,
@@ -129,23 +183,22 @@
             };
 
             try {
-                // ส่งข้อมูลไปที่ Google Sheets (โหมด no-cors เพื่อเลี่ยงปัญหาสิทธิ์บน Browser)
+                // ส่งข้อมูลไปบันทึก
                 await fetch(scriptURL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'no-cors', // สำคัญ: เพื่อเลี่ยงปัญหา CORS บนมือถือ
                     cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                alert("ลงชื่อเล่นสำเร็จแล้ว! ตรวจสอบรายชื่อได้ที่ Google Sheets");
-                goToPage('home');
+                alert("ลงชื่อ " + selectedDay + " เรียบร้อยแล้ว!");
+                fetchMembers(selectedDay); // รีเฟรชรายชื่อใหม่
             } catch (error) {
-                console.error('Error!', error.message);
-                alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
+                alert("เกิดข้อผิดพลาด: " + error.message);
             } finally {
-                btn.innerText = "ลงชื่อเล่นรอบนี้";
-                btn.classList.remove('loading');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
             }
         }
 
