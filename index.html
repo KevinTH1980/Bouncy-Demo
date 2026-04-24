@@ -2,120 +2,123 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Badminton Bouncy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        body { font-family: 'IBM Plex Sans Thai', sans-serif; }
-        .page { transition: all 0.3s ease; }
+        body { font-family: 'IBM Plex Sans Thai', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .page { display: none; transition: all 0.2s ease-in-out; }
+        .page.active { display: block; }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center">
 
     <div class="w-full max-w-md bg-white min-h-screen relative shadow-2xl overflow-hidden">
         
-        <div id="home-page" class="page">
-            <header class="p-6 flex justify-between items-center">
+        <div id="home-page" class="page active">
+            <header class="p-6 flex justify-between items-center border-b border-gray-50 bg-white sticky top-0 z-10">
                 <div class="flex items-center gap-3">
-                    <img id="user-img" src="https://via.placeholder.com/150" class="w-12 h-12 rounded-full border-2 border-gray-100 shadow-sm">
+                    <img id="user-img" src="https://www.w3schools.com/howto/img_avatar.png" class="w-12 h-12 rounded-full border-2 border-gray-100 shadow-sm">
                     <div>
                         <p class="text-gray-400 text-xs">ยินดีต้อนรับ</p>
-                        <h1 id="user-name" class="text-xl font-bold text-gray-800">กำลังโหลด...</h1>
+                        <h1 id="user-name" class="text-xl font-bold text-gray-800">ผู้ใช้งาน 👋</h1>
                     </div>
                 </div>
-                <button class="w-10 h-10 rounded-full border flex items-center justify-center bg-gray-50">🔔</button>
+                <button class="w-10 h-10 rounded-full border flex items-center justify-center bg-gray-50 text-xl">🔔</button>
             </header>
 
             <main class="p-6 space-y-6">
                 <div>
-                    <h2 class="font-bold text-gray-500 mb-4 uppercase text-[10px] tracking-widest">ตารางเล่นสัปดาห์นี้</h2>
+                    <h2 class="font-bold text-gray-400 mb-4 uppercase text-[10px] tracking-widest">ตารางเล่นสัปดาห์นี้</h2>
                     <div onclick="goToPage('booking')" class="bg-white border border-gray-100 rounded-[24px] p-5 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-transform">
                         <div class="space-y-1">
-                            <p class="font-bold text-lg">อังคาร</p>
+                            <p class="font-bold text-lg text-slate-800">อังคาร</p>
                             <p class="text-gray-400 text-sm">23 เม.ย. 2567</p>
-                            <p class="text-sm font-semibold">18:00 - 20:00</p>
+                            <p class="text-sm font-semibold text-slate-600 font-mono">18:00 - 20:00</p>
                         </div>
                         <div class="text-right">
-                            <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-[10px] font-bold">ลงชื่อแล้ว</span>
+                            <span class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-[10px] font-bold italic">ลงชื่อแล้ว</span>
                             <p class="text-xs text-gray-400 mt-2">👥 22 / 24 คน</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="bg-gray-50 rounded-[20px] p-4 border border-gray-100">
-                    <h3 class="text-sm font-bold flex justify-between">ประกาศล่าสุด <span class="text-blue-500 text-xs cursor-pointer">ดูทั้งหมด</span></h3>
+                    <h3 class="text-sm font-bold flex justify-between text-slate-700">ประกาศล่าสุด <span class="text-blue-500 text-xs font-normal">ดูทั้งหมด</span></h3>
                     <ul class="text-xs text-gray-500 mt-2 space-y-2">
-                        <li>📢 วันนี้เปลี่ยนคอร์ทเป็น C2</li>
-                        <li>🏸 พฤหัสเพิ่มลูกแบดเป็น 2 หลอด</li>
+                        <li class="flex gap-2"><span>📢</span> วันนี้เปลี่ยนคอร์ทเป็น C2 (คอร์ทในสุด)</li>
+                        <li class="flex gap-2"><span>🏸</span> พฤหัสนี้แจกลูกแบดฟรีคนละ 1 ลูก</li>
                     </ul>
                 </div>
             </main>
         </div>
 
-        <div id="booking-page" class="page hidden">
-            <nav class="p-6 flex items-center gap-4">
-                <button onclick="goToPage('home')" class="text-xl">←</button>
-                <h1 class="text-xl font-bold">ลงชื่อเล่น</h1>
+        <div id="booking-page" class="page">
+            <nav class="p-6 flex items-center gap-4 sticky top-0 bg-white z-10">
+                <button onclick="goToPage('home')" class="text-2xl p-2 bg-gray-50 rounded-full w-10 h-10 flex items-center justify-center">←</button>
+                <h1 class="text-xl font-bold">รายละเอียดการจอง</h1>
             </nav>
             <div class="px-6">
-                <div class="bg-white border rounded-[30px] p-6 space-y-6 shadow-sm">
+                <div class="bg-white border border-gray-100 rounded-[30px] p-6 space-y-6 shadow-sm">
                     <div class="flex justify-between items-center">
                         <h2 class="font-bold text-lg text-slate-800">อังคาร 23 เม.ย.</h2>
-                        <span class="text-sm text-gray-400">18:00 - 20:00</span>
+                        <span class="text-sm text-gray-400 font-mono">18:00 - 20:00</span>
                     </div>
-                    <div class="space-y-3">
-                        <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-slate-700 h-full w-[92%]"></div>
+                    <div class="space-y-3 text-center">
+                        <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                            <div class="bg-slate-700 h-full w-[92%] transition-all duration-500"></div>
                         </div>
-                        <p class="text-center font-bold text-sm text-slate-600">ลงชื่อแล้ว 22 / 24 คน</p>
+                        <p class="font-bold text-sm text-slate-600">ลงชื่อแล้ว 22 / 24 คน</p>
                     </div>
-                    <div class="pt-4 border-t space-y-3">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-400">ค่าใช้จ่ายประมาณ</span>
-                            <span class="font-bold text-slate-800">90 บาท</span>
+                    <div class="pt-6 border-t border-dashed space-y-4">
+                        <div class="flex justify-between text-sm items-center">
+                            <span class="text-gray-400">ค่าสนามเฉลี่ยต่อคน</span>
+                            <span class="font-bold text-2xl text-slate-800">90 <span class="text-xs font-normal text-gray-400">THB</span></span>
                         </div>
-                        <button onclick="goToPage('payment')" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold shadow-lg active:bg-black transition-colors">ลงชื่อเล่น</button>
+                        <button onclick="goToPage('payment')" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">ยืนยันลงชื่อเล่น</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="payment-page" class="page hidden">
-            <nav class="p-6 flex items-center gap-4">
-                <button onclick="goToPage('home')" class="text-xl">←</button>
-                <h1 class="text-xl font-bold">ชำระเงิน</h1>
+        <div id="payment-page" class="page">
+            <nav class="p-6 flex items-center gap-4 sticky top-0 bg-white z-10">
+                <button onclick="goToPage('home')" class="text-2xl p-2 bg-gray-50 rounded-full w-10 h-10 flex items-center justify-center">←</button>
+                <h1 class="text-xl font-bold text-center flex-1 pr-10">การชำระเงิน</h1>
             </nav>
-            <div class="px-6 text-center space-y-8">
-                <div>
-                    <p class="text-gray-400 text-sm">ยอดที่ต้องชำระ</p>
-                    <p class="text-5xl font-bold text-slate-800 mt-2">90 <span class="text-lg">บาท</span></p>
+            <div class="px-6 text-center space-y-8 pb-32">
+                <div class="bg-slate-50 py-8 rounded-[32px]">
+                    <p class="text-gray-400 text-sm mb-1">ยอดโอนสุทธิ</p>
+                    <p class="text-5xl font-bold text-slate-800">90.00</p>
+                    <p class="text-xs text-slate-400 mt-2 uppercase tracking-widest">Thai Baht</p>
                 </div>
-                <div class="bg-white border rounded-[32px] p-8 shadow-sm inline-block">
-                    <div class="w-48 h-48 bg-gray-50 mx-auto rounded-xl flex items-center justify-center border-2 border-dashed border-gray-200">
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest text-center">QR CODE<br>PROMPTPAY</p>
+                <div class="bg-white border-4 border-slate-50 rounded-[40px] p-8 shadow-sm inline-block">
+                    <div class="w-48 h-48 bg-gray-100 mx-auto rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-200">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest leading-relaxed">Scan QR<br>PromptPay</p>
                     </div>
-                    <p class="mt-5 font-bold text-slate-700">ชื่อบัญชี: กลุ่มแบดมินตันเชียงใหม่</p>
+                    <p class="mt-6 font-bold text-slate-700">บจก. แบดมินตันเชียงใหม่</p>
+                    <p class="text-[10px] text-gray-400 mt-1 uppercase">Ref No: 20240423-001</p>
                 </div>
-                <button onclick="liff.closeWindow()" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold shadow-lg">ฉันจ่ายแล้ว (แจ้งในแชท)</button>
+                <button onclick="handlePaid()" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold shadow-xl active:scale-95 transition-all">แจ้งโอนเงินและปิดหน้าต่าง</button>
             </div>
         </div>
 
-        <nav class="absolute bottom-0 w-full bg-white border-t flex justify-around py-3 pb-8 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
-            <button onclick="goToPage('home')" class="flex flex-col items-center gap-1 text-slate-800">
+        <nav class="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-100 flex justify-around py-3 pb-8 z-50">
+            <button onclick="goToPage('home')" id="nav-home" class="flex flex-col items-center gap-1 text-slate-800 transition-colors">
                 <span class="text-xl">🏠</span>
                 <span class="text-[10px] font-bold">หน้าหลัก</span>
             </button>
-            <button onclick="goToPage('booking')" class="flex flex-col items-center gap-1 text-gray-300">
+            <button onclick="goToPage('booking')" id="nav-booking" class="flex flex-col items-center gap-1 text-gray-300 transition-colors">
                 <span class="text-xl">📅</span>
                 <span class="text-[10px] font-bold">ตารางเล่น</span>
             </button>
-            <button onclick="goToPage('payment')" class="flex flex-col items-center gap-1 text-gray-300">
+            <button onclick="goToPage('payment')" id="nav-payment" class="flex flex-col items-center gap-1 text-gray-300 transition-colors">
                 <span class="text-xl">💰</span>
-                <span class="text-[10px] font-bold">การจ่ายเงิน</span>
+                <span class="text-[10px] font-bold">จ่ายเงิน</span>
             </button>
-            <button class="flex flex-col items-center gap-1 text-gray-300">
+            <button class="flex flex-col items-center gap-1 text-gray-300 opacity-50 cursor-not-allowed">
                 <span class="text-xl">👤</span>
                 <span class="text-[10px] font-bold">โปรไฟล์</span>
             </button>
@@ -123,34 +126,61 @@
     </div>
 
     <script>
-        // --- ส่วนที่ 2: ตั้งค่า LIFF ---
-        const liffId = "2009890406-XhexEJs4"; // นำ LIFF ID จาก LINE Developers มาวางตรงนี้
+        // ใส่ LIFF ID ที่ระบุมา
+        const liffId = "2009890406-XhexEJs4";
 
-        async function initLiff() {
+        // เริ่มต้นการทำงานของ LIFF
+        async function initializeLiff() {
             try {
                 await liff.init({ liffId: liffId });
-                if (!liff.isLoggedIn()) {
-                    liff.login();
+                if (liff.isLoggedIn()) {
+                    getUserProfile();
                 } else {
-                    const profile = await liff.getProfile();
-                    // เปลี่ยนชื่อและรูปตาม LINE Profile จริง
-                    document.getElementById('user-name').innerText = "สวัสดี, " + profile.displayName + " 👋";
-                    document.getElementById('user-img').src = profile.pictureUrl;
+                    // ถ้าเปิดผ่าน Browser ภายนอกจะให้ Login อัตโนมัติ
+                    liff.login();
                 }
-            } catch (error) {
-                console.log("LIFF Init Error: ", error);
-                document.getElementById('user-name').innerText = "สวัสดี, ผู้ใช้งาน 👋";
+            } catch (err) {
+                console.error('LIFF Error:', err);
             }
         }
 
-        function goToPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
-            document.getElementById(pageId + '-page').classList.remove('hidden');
-            window.scrollTo(0, 0);
+        // ดึงข้อมูล Profile
+        async function getUserProfile() {
+            const profile = await liff.getProfile();
+            document.getElementById('user-name').innerText = "สวัสดี, " + profile.displayName + " 👋";
+            if (profile.pictureUrl) {
+                document.getElementById('user-img').src = profile.pictureUrl;
+            }
         }
 
-        // รันคำสั่งเมื่อหน้าจอโหลด
-        initLiff();
+        // ฟังก์ชันสลับหน้า
+        function goToPage(pageId) {
+            // ซ่อนทุกหน้า
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // แสดงหน้าใหม่
+            const activePage = document.getElementById(pageId + '-page');
+            if(activePage) activePage.classList.add('active');
+
+            // เปลี่ยนสีเมนูด้านล่าง
+            const navs = ['home', 'booking', 'payment'];
+            navs.forEach(nav => {
+                const navBtn = document.getElementById('nav-' + nav);
+                if(nav === pageId) {
+                    navBtn.classList.replace('text-gray-300', 'text-slate-800');
+                } else {
+                    navBtn.classList.replace('text-slate-800', 'text-gray-300');
+                }
+            });
+            window.scrollTo(0,0);
+        }
+
+        function handlePaid() {
+            alert('บันทึกการโอนเงินสำเร็จ!');
+            liff.closeWindow();
+        }
+
+        // รันคำสั่งเมื่อหน้าเว็บโหลดเสร็จ
+        document.addEventListener('DOMContentLoaded', initializeLiff);
     </script>
 </body>
 </html>
