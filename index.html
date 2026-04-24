@@ -1,80 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bouncy Badminton</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body class="bg-gray-100 p-4">
-    <div id="app" class="max-w-md mx-auto bg-white rounded-3xl shadow-lg p-6 min-h-[500px]">
-        <div id="home">
-            <h1 class="text-2xl font-bold mb-4 text-center border-b pb-4">Bouncy Badminton 🏸</h1>
-            <button onclick="selectDay('วันอังคาร')" class="w-full bg-blue-500 text-white p-6 rounded-2xl mb-4 font-bold">วันอังคาร (09:00 - 11:00)</button>
-            <button onclick="selectDay('วันพฤหัสบดี')" class="w-full bg-blue-500 text-white p-6 rounded-2xl font-bold">วันพฤหัสบดี (09:00 - 11:00)</button>
+    <div class="max-w-md mx-auto bg-white rounded-3xl shadow-lg p-6 min-h-[400px]">
+        <div id="home-page">
+            <h1 class="text-xl font-bold mb-6 text-center">Bouncy Badminton 🏸</h1>
+            <div class="space-y-3">
+                <button onclick="selectDate('วันอังคาร')" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold">วันอังคาร (09:00 - 11:00)</button>
+                <button onclick="selectDate('วันพฤหัสบดี')" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold">วันพฤหัสบดี (09:00 - 11:00)</button>
+            </div>
         </div>
 
-        <div id="booking" class="hidden">
-            <button onclick="location.reload()" class="mb-4 text-blue-500">← กลับหน้าหลัก</button>
-            <h2 id="day-title" class="text-xl font-bold mb-4 text-blue-600"></h2>
-            <div id="list" class="bg-gray-50 p-4 rounded-xl mb-6 min-h-[100px] text-sm space-y-2">กำลังโหลดรายชื่อ...</div>
-            <button id="btn-action" onclick="handleAction()" class="w-full py-4 rounded-xl font-bold text-white shadow-lg">กำลังโหลด...</button>
+        <div id="booking-page" class="hidden">
+            <button onclick="location.reload()" class="text-blue-500 mb-4">← กลับหน้าหลัก</button>
+            <h2 id="day-label" class="text-lg font-bold mb-4"></h2>
+            
+            <div class="bg-gray-50 rounded-xl p-4 mb-6">
+                <h3 class="text-sm font-bold border-b pb-2 mb-3">รายชื่อที่ลงแล้ว</h3>
+                <div id="member-list" class="text-sm space-y-2 italic text-gray-400">กำลังโหลดข้อมูล...</div>
+            </div>
+
+            <button id="btn-action" onclick="confirmAction()" class="w-full p-4 rounded-xl font-bold text-white shadow-lg bg-gray-400" disabled>
+                รอโหลดข้อมูล...
+            </button>
         </div>
     </div>
 
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzQ3JaC1ET5bnaHknS0-nKTjdeQGb0jj1qXuJYfw4AEV03sNUVr1LZ-5n5MCYhRxj64/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbx7n2H6RI3KGGZxq-RlW__aEp6IAVctfHjZJLh8Bz9BWam32uhovZ-1w0KpJbH9hOT3/exec";
         let userName = "";
-        let currentDay = "";
+        let selectedDay = "";
         let isBooked = false;
 
-        async function init() {
+        async function initLiff() {
             await liff.init({ liffId: "2009890406-XhexEJs4" });
             if (!liff.isLoggedIn()) liff.login();
             const profile = await liff.getProfile();
             userName = profile.displayName;
         }
 
-        async function selectDay(day) {
-            currentDay = day;
-            document.getElementById('home').classList.add('hidden');
-            document.getElementById('booking').classList.remove('hidden');
-            document.getElementById('day-title').innerText = day;
-            loadData();
-        }
-
-        async function loadData() {
-            const listDiv = document.getElementById('list');
+        async function fetchMembers(day) {
+            const listDiv = document.getElementById('member-list');
             const btn = document.getElementById('btn-action');
+            
             try {
                 const res = await fetch(scriptURL);
                 const data = await res.json();
-                const filtered = data.filter(d => d.day === currentDay);
+                const filtered = data.filter(d => d.day === day);
+                
                 isBooked = filtered.some(d => d.name === userName);
+                
+                // แสดงรายชื่อ
+                listDiv.innerHTML = filtered.length ? 
+                    filtered.map((d, i) => `<div class="text-slate-700">${i+1}. ${d.name}</div>`).join('') : 
+                    "ยังไม่มีคนลงชื่อ";
 
-                listDiv.innerHTML = filtered.length ? filtered.map((d, i) => `<div>${i+1}. ${d.name}</div>`).join('') : "ยังไม่มีคนลงชื่อ";
-                btn.innerText = isBooked ? "ถอนรายชื่อ ❌" : "ลงชื่อเข้าเล่น 🏸";
-                btn.className = isBooked ? "w-full py-4 rounded-xl font-bold text-white bg-red-500" : "w-full py-4 rounded-xl font-bold text-white bg-green-500";
-            } catch (e) { listDiv.innerHTML = "โหลดข้อมูลไม่สำเร็จ"; }
+                // เปลี่ยนสถานะปุ่ม
+                btn.disabled = false;
+                btn.innerText = isBooked ? "ถอนรายชื่อออก ❌" : "ลงชื่อเข้าเล่น 🏸";
+                btn.className = isBooked ? "w-full p-4 rounded-xl font-bold text-white bg-red-500" : "w-full p-4 rounded-xl font-bold text-white bg-green-600";
+                
+            } catch (err) {
+                listDiv.innerHTML = "โหลดข้อมูลไม่สำเร็จ กรุณาลองใหม่";
+            }
         }
 
-        async function handleAction() {
+        function selectDate(day) {
+            selectedDay = day;
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('booking-page').classList.remove('hidden');
+            document.getElementById('day-label').innerText = "รอบ " + day;
+            fetchMembers(day);
+        }
+
+        async function confirmAction() {
             const btn = document.getElementById('btn-action');
-            btn.disabled = true;
-            btn.innerText = "กำลังประมวลผล...";
             const action = isBooked ? 'remove' : 'add';
             
+            btn.disabled = true;
+            btn.innerText = "กำลังประมวลผล...";
+
             await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify({ name: userName, day: currentDay, action: action })
+                body: JSON.stringify({ name: userName, day: selectedDay, action: action })
             });
 
-            setTimeout(loadData, 1500);
+            // รอ 1.5 วินาทีแล้วโหลดใหม่
+            setTimeout(() => { fetchMembers(selectedDay); }, 1500);
         }
 
-        init();
+        initLiff();
     </script>
 </body>
 </html>
