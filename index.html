@@ -6,6 +6,7 @@
     <title>Badminton Hub - LIFF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
         body { font-family: 'IBM Plex Sans Thai', sans-serif; }
         .page { transition: all 0.3s ease; }
@@ -17,17 +18,20 @@
         
         <div id="home-page" class="page">
             <header class="p-6 flex justify-between items-center">
-                <div>
-                    <p class="text-gray-400 text-sm">ยินดีต้อนรับ</p>
-                    <h1 class="text-2xl font-bold text-gray-800">สวัสดี, ต้น 👋</h1>
+                <div class="flex items-center gap-3">
+                    <img id="user-img" src="https://via.placeholder.com/150" class="w-12 h-12 rounded-full border-2 border-gray-100 shadow-sm">
+                    <div>
+                        <p class="text-gray-400 text-xs">ยินดีต้อนรับ</p>
+                        <h1 id="user-name" class="text-xl font-bold text-gray-800">กำลังโหลด...</h1>
+                    </div>
                 </div>
                 <button class="w-10 h-10 rounded-full border flex items-center justify-center bg-gray-50">🔔</button>
             </header>
 
             <main class="p-6 space-y-6">
                 <div>
-                    <h2 class="font-bold text-gray-500 mb-4">ตารางเล่นสัปดาห์นี้</h2>
-                    <div onclick="goToPage('booking')" class="bg-white border border-gray-100 rounded-[24px] p-5 shadow-sm flex justify-between items-center cursor-pointer hover:bg-gray-50">
+                    <h2 class="font-bold text-gray-500 mb-4 uppercase text-[10px] tracking-widest">ตารางเล่นสัปดาห์นี้</h2>
+                    <div onclick="goToPage('booking')" class="bg-white border border-gray-100 rounded-[24px] p-5 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-transform">
                         <div class="space-y-1">
                             <p class="font-bold text-lg">อังคาร</p>
                             <p class="text-gray-400 text-sm">23 เม.ย. 2567</p>
@@ -40,11 +44,11 @@
                     </div>
                 </div>
 
-                <div class="bg-gray-50 rounded-[20px] p-4">
-                    <h3 class="text-sm font-bold flex justify-between">ประกาศล่าสุด <span class="text-blue-500 text-xs">ดูทั้งหมด</span></h3>
-                    <ul class="text-xs text-gray-500 mt-2 space-y-1">
-                        <li>• วันนี้เปลี่ยนคอร์ทเป็น C2</li>
-                        <li>• พฤหัสเพิ่มลูกแบด</li>
+                <div class="bg-gray-50 rounded-[20px] p-4 border border-gray-100">
+                    <h3 class="text-sm font-bold flex justify-between">ประกาศล่าสุด <span class="text-blue-500 text-xs cursor-pointer">ดูทั้งหมด</span></h3>
+                    <ul class="text-xs text-gray-500 mt-2 space-y-2">
+                        <li>📢 วันนี้เปลี่ยนคอร์ทเป็น C2</li>
+                        <li>🏸 พฤหัสเพิ่มลูกแบดเป็น 2 หลอด</li>
                     </ul>
                 </div>
             </main>
@@ -55,29 +59,24 @@
                 <button onclick="goToPage('home')" class="text-xl">←</button>
                 <h1 class="text-xl font-bold">ลงชื่อเล่น</h1>
             </nav>
-
             <div class="px-6">
-                <div class="bg-white border rounded-[24px] p-6 space-y-6">
+                <div class="bg-white border rounded-[30px] p-6 space-y-6 shadow-sm">
                     <div class="flex justify-between items-center">
-                        <h2 class="font-bold text-lg">อังคาร 23 เม.ย. 2567</h2>
+                        <h2 class="font-bold text-lg text-slate-800">อังคาร 23 เม.ย.</h2>
                         <span class="text-sm text-gray-400">18:00 - 20:00</span>
                     </div>
-
-                    <div class="space-y-2">
-                        <p class="text-sm text-gray-500 text-center">สถานะการลงชื่อ</p>
-                        <p class="text-center font-bold text-xl">22 / 24 คน</p>
-                        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                            <div class="bg-slate-700 h-full w-[90%]"></div>
+                    <div class="space-y-3">
+                        <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                            <div class="bg-slate-700 h-full w-[92%]"></div>
                         </div>
+                        <p class="text-center font-bold text-sm text-slate-600">ลงชื่อแล้ว 22 / 24 คน</p>
                     </div>
-
                     <div class="pt-4 border-t space-y-3">
                         <div class="flex justify-between text-sm">
-                            <span>ค่าใช้จ่ายโดยประมาณ</span>
-                            <span class="font-bold">90 บาท</span>
+                            <span class="text-gray-400">ค่าใช้จ่ายประมาณ</span>
+                            <span class="font-bold text-slate-800">90 บาท</span>
                         </div>
-                        <button onclick="goToPage('payment')" class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold">ลงชื่อเล่น</button>
-                        <button onclick="goToPage('home')" class="w-full border py-4 rounded-xl font-bold text-gray-400">ถอนตัว</button>
+                        <button onclick="goToPage('payment')" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold shadow-lg active:bg-black transition-colors">ลงชื่อเล่น</button>
                     </div>
                 </div>
             </div>
@@ -88,58 +87,70 @@
                 <button onclick="goToPage('home')" class="text-xl">←</button>
                 <h1 class="text-xl font-bold">ชำระเงิน</h1>
             </nav>
-
-            <div class="px-6 text-center space-y-6">
-                <div class="py-4">
-                    <p class="text-gray-400">ยอดที่ต้องชำระ</p>
-                    <p class="text-4xl font-bold text-gray-800">90 <span class="text-lg">บาท</span></p>
+            <div class="px-6 text-center space-y-8">
+                <div>
+                    <p class="text-gray-400 text-sm">ยอดที่ต้องชำระ</p>
+                    <p class="text-5xl font-bold text-slate-800 mt-2">90 <span class="text-lg">บาท</span></p>
                 </div>
-
-                <div class="bg-white border rounded-[24px] p-6 shadow-sm inline-block">
-                    <div class="w-48 h-48 bg-gray-100 mx-auto rounded-lg flex items-center justify-center border-2 border-dashed">
-                        <p class="text-[10px] text-gray-400">QR CODE PROMPTPAY</p>
+                <div class="bg-white border rounded-[32px] p-8 shadow-sm inline-block">
+                    <div class="w-48 h-48 bg-gray-50 mx-auto rounded-xl flex items-center justify-center border-2 border-dashed border-gray-200">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest text-center">QR CODE<br>PROMPTPAY</p>
                     </div>
-                    <p class="mt-4 font-bold text-sm">ชื่อบัญชี: กลุ่มตีแบด XYZ</p>
+                    <p class="mt-5 font-bold text-slate-700">ชื่อบัญชี: กลุ่มแบดมินตันเชียงใหม่</p>
                 </div>
-
-                <button onclick="alert('ส่งหลักฐานเรียบร้อย! รอแอดมินยืนยัน')" class="w-full bg-slate-800 text-white py-4 rounded-xl font-bold">ฉันจ่ายแล้ว</button>
+                <button onclick="liff.closeWindow()" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold shadow-lg">ฉันจ่ายแล้ว (แจ้งในแชท)</button>
             </div>
         </div>
 
-        <nav class="absolute bottom-0 w-full bg-white border-t flex justify-around py-3 pb-8">
-            <button onclick="goToPage('home')" class="flex flex-col items-center gap-1 text-blue-600">
+        <nav class="absolute bottom-0 w-full bg-white border-t flex justify-around py-3 pb-8 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+            <button onclick="goToPage('home')" class="flex flex-col items-center gap-1 text-slate-800">
                 <span class="text-xl">🏠</span>
                 <span class="text-[10px] font-bold">หน้าหลัก</span>
             </button>
-            <button onclick="goToPage('booking')" class="flex flex-col items-center gap-1 text-gray-400">
+            <button onclick="goToPage('booking')" class="flex flex-col items-center gap-1 text-gray-300">
                 <span class="text-xl">📅</span>
                 <span class="text-[10px] font-bold">ตารางเล่น</span>
             </button>
-            <button onclick="goToPage('payment')" class="flex flex-col items-center gap-1 text-gray-400">
+            <button onclick="goToPage('payment')" class="flex flex-col items-center gap-1 text-gray-300">
                 <span class="text-xl">💰</span>
                 <span class="text-[10px] font-bold">การจ่ายเงิน</span>
             </button>
-            <button class="flex flex-col items-center gap-1 text-gray-400">
+            <button class="flex flex-col items-center gap-1 text-gray-300">
                 <span class="text-xl">👤</span>
                 <span class="text-[10px] font-bold">โปรไฟล์</span>
             </button>
         </nav>
-
     </div>
 
     <script>
-        function goToPage(pageId) {
-            // ซ่อนทุกหน้า
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.add('hidden');
-            });
-            // แสดงหน้าที่เลือก
-            document.getElementById(pageId + '-page').classList.remove('hidden');
-            
-            // ปรับสีปุ่ม Nav (Optional: เพิ่มสีให้ปุ่มที่ถูกเลือกได้ตรงนี้)
-            console.log("Moved to: " + pageId);
-        }
-    </script>
+        // --- ส่วนที่ 2: ตั้งค่า LIFF ---
+        const liffId = "2009890406-XhexEJs4"; // นำ LIFF ID จาก LINE Developers มาวางตรงนี้
 
+        async function initLiff() {
+            try {
+                await liff.init({ liffId: liffId });
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                } else {
+                    const profile = await liff.getProfile();
+                    // เปลี่ยนชื่อและรูปตาม LINE Profile จริง
+                    document.getElementById('user-name').innerText = "สวัสดี, " + profile.displayName + " 👋";
+                    document.getElementById('user-img').src = profile.pictureUrl;
+                }
+            } catch (error) {
+                console.log("LIFF Init Error: ", error);
+                document.getElementById('user-name').innerText = "สวัสดี, ผู้ใช้งาน 👋";
+            }
+        }
+
+        function goToPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // รันคำสั่งเมื่อหน้าจอโหลด
+        initLiff();
+    </script>
 </body>
 </html>
