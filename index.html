@@ -12,54 +12,66 @@
         .page { display: none; }
         .page.active { display: block; }
         .btn-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        /* สไตล์ประกาศข่าว */
+        .news-banner {
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            border: 1px solid #fde68a;
+        }
     </style>
 </head>
-<body class="bg-slate-50 flex justify-center">
+<body class="bg-slate-50 flex justify-center text-slate-800">
 
     <div class="w-full max-w-md bg-white min-h-screen relative shadow-2xl pb-32">
         
-        <div class="absolute top-4 right-4 z-50 flex gap-1 bg-white/50 backdrop-blur-sm p-1 rounded-full border border-slate-200 shadow-sm text-[10px] font-bold">
-            <button onclick="setLang('th')" id="lang-th" class="px-3 py-1 rounded-full transition-all">TH</button>
-            <button onclick="setLang('en')" id="lang-en" class="px-3 py-1 rounded-full transition-all">EN</button>
-            <button onclick="setLang('cn')" id="lang-cn" class="px-3 py-1 rounded-full transition-all">CN</button>
+        <div class="absolute top-4 right-4 z-50 flex gap-1 bg-white/50 backdrop-blur-sm p-1 rounded-full border border-slate-200 text-[10px] font-bold">
+            <button onclick="setLang('th')" id="lang-th" class="px-3 py-1 rounded-full">TH</button>
+            <button onclick="setLang('en')" id="lang-en" class="px-3 py-1 rounded-full">EN</button>
+            <button onclick="setLang('cn')" id="lang-cn" class="px-3 py-1 rounded-full">CN</button>
         </div>
 
         <div id="home-page" class="page active">
-            <header class="p-10 text-center">
+            <header class="pt-10 pb-6 text-center">
                 <img id="user-img" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full border-4 border-white shadow-xl mx-auto object-cover mb-4">
-                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Bouncy Badminton</h1>
+                <h1 class="text-2xl font-bold tracking-tight">Bouncy Badminton</h1>
                 <p id="txt-welcome" class="text-slate-400 text-xs mt-1 font-light uppercase tracking-widest"></p>
             </header>
-            
-            <div class="px-8 space-y-5">
-                <p id="txt-select-day" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1"></p>
-                
-                <div onclick="selectDate('วันอังคาร')" class="bg-white border border-slate-100 rounded-[30px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all hover:border-blue-200">
-                    <div>
-                        <p class="font-bold text-lg text-slate-800" id="label-tuesday">--</p>
-                        <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00</p>
-                    </div>
-                    <div class="bg-blue-50 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center shadow-inner">→</div>
-                </div>
 
-                <div onclick="selectDate('วันพฤหัสบดี')" class="bg-white border border-slate-100 rounded-[30px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all hover:border-blue-200">
+            <div id="news-section" class="px-8 mb-6 hidden">
+                <div class="news-banner rounded-[24px] p-4 flex gap-3 items-start shadow-sm">
+                    <span class="text-xl">📢</span>
                     <div>
-                        <p class="font-bold text-lg text-slate-800" id="label-thursday">--</p>
+                        <p id="txt-news-title" class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1">Update</p>
+                        <p id="news-content" class="text-xs text-amber-900 leading-relaxed font-medium">--</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="px-8 space-y-4">
+                <p id="txt-select-day" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1"></p>
+                <div onclick="selectDate('วันอังคาร')" class="bg-white border border-slate-100 rounded-[30px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all">
+                    <div>
+                        <p class="font-bold text-lg" id="label-tuesday">--</p>
                         <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00</p>
                     </div>
-                    <div class="bg-blue-50 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center shadow-inner">→</div>
+                    <div class="bg-blue-50 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center italic font-bold">→</div>
+                </div>
+                <div onclick="selectDate('วันพฤหัสบดี')" class="bg-white border border-slate-100 rounded-[30px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all">
+                    <div>
+                        <p class="font-bold text-lg" id="label-thursday">--</p>
+                        <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00</p>
+                    </div>
+                    <div class="bg-blue-50 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center italic font-bold">→</div>
                 </div>
             </div>
         </div>
 
         <div id="booking-page" class="page">
             <nav class="p-6 flex items-center gap-4 sticky top-0 bg-white/90 backdrop-blur-md z-10 border-b border-slate-50">
-                <button onclick="location.reload()" class="w-10 h-10 flex items-center justify-center bg-slate-100 rounded-full active:scale-90 transition-transform text-xl">←</button>
-                <h1 id="txt-nav-title" class="text-lg font-bold text-slate-800"></h1>
+                <button onclick="location.reload()" class="w-10 h-10 flex items-center justify-center bg-slate-100 rounded-full text-xl">←</button>
+                <h1 id="txt-nav-title" class="text-lg font-bold"></h1>
             </nav>
-            
             <div class="p-6 space-y-6">
-                <div class="bg-slate-900 text-white rounded-[35px] p-8 shadow-2xl relative overflow-hidden">
+                <div class="bg-slate-900 text-white rounded-[35px] p-8 shadow-2xl">
                     <h2 id="selected-day-label" class="text-2xl font-bold mb-6 tracking-tight">-</h2>
                     <div class="grid grid-cols-2 gap-4 text-center">
                         <div class="bg-white/10 rounded-2xl p-4 border border-white/5">
@@ -72,17 +84,13 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="bg-white border border-slate-100 rounded-[30px] p-6 shadow-sm min-h-[300px]">
+                <div class="bg-white border border-slate-100 rounded-[30px] p-6 min-h-[250px]">
                     <div id="member-list" class="space-y-1 max-h-[350px] overflow-y-auto pr-1">
                         <div class="text-center text-slate-300 py-10 text-sm">Loading...</div>
                     </div>
                 </div>
-
                 <div class="fixed bottom-8 left-0 w-full px-8 max-w-md mx-auto">
-                    <button id="btn-action" onclick="confirmAction()" class="w-full py-4.5 rounded-[22px] font-bold shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-2 text-white">
-                        ...
-                    </button>
+                    <button id="btn-action" onclick="confirmAction()" class="w-full py-4.5 rounded-[22px] font-bold shadow-2xl flex items-center justify-center gap-2 text-white">...</button>
                 </div>
             </div>
         </div>
@@ -90,7 +98,7 @@
     </div>
 
     <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzgBHcnzkTodSmMhfhp1QPaP_UBqOC9tBVmYNDTd0qgwdbYWG4HvnD2fSe9t05JXPX5/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbywjdI1Kcr4ZqKvcznnAFaaL13zQViXgpy_3pMSqQ3F7S4e1UIBBpmT0c7hbTk6Jhmh/exec";
         const liffId = "2009890406-XhexEJs4";
         
         let userName = "";
@@ -99,53 +107,15 @@
         let currentLang = 'th';
 
         const i18n = {
-            th: {
-                welcome: "ยินดีต้อนรับสมาชิกทุกท่าน 🏸",
-                selectDay: "กรุณาเลือกวันเข้าเล่น",
-                navTitle: "รายชื่อนักกีฬา",
-                statMember: "สมาชิก",
-                statCourt: "สนามที่ใช้",
-                noMember: "ยังไม่มีคนลงชื่อ",
-                join: "ลงชื่อเข้าเล่นรอบนี้ 🏸",
-                leave: "ถอนรายชื่อออก ❌",
-                alertJoin: "ลงชื่อสำเร็จ! เตรียมตัวให้พร้อมนะครับ",
-                alertLeave: "ถอนรายชื่อเรียบร้อยแล้ว",
-                processing: "กำลังประมวลผล..."
-            },
-            en: {
-                welcome: "Welcome to our community 🏸",
-                selectDay: "Please select a session",
-                navTitle: "Player List",
-                statMember: "Members",
-                statCourt: "Courts",
-                noMember: "No participants yet",
-                join: "Join this session 🏸",
-                leave: "Leave session ❌",
-                alertJoin: "Join successful! See you on court.",
-                alertLeave: "Successfully removed.",
-                processing: "Processing..."
-            },
-            cn: {
-                welcome: "欢迎来到羽毛球社区 🏸",
-                selectDay: "请选择活动日期",
-                navTitle: "选手名单",
-                statMember: "人数",
-                statCourt: "场地数",
-                noMember: "暂无报名人数",
-                join: "报名参加 🏸",
-                leave: "取消报名 ❌",
-                alertJoin: "报名成功！球场见。",
-                alertLeave: "已取消报名。",
-                processing: "正在处理..."
-            }
+            th: { welcome: "ยินดีต้อนรับสมาชิก 🏸", selectDay: "เลือกวันเข้าเล่น", navTitle: "รายชื่อนักกีฬา", statMember: "สมาชิก", statCourt: "สนาม", noMember: "ยังไม่มีคนลงชื่อ", join: "ลงชื่อเข้าเล่น 🏸", leave: "ถอนชื่อออก ❌", processing: "กำลังส่งข้อมูล...", update: "ประกาศข่าว" },
+            en: { welcome: "Welcome Members 🏸", selectDay: "Select session", navTitle: "Player List", statMember: "Members", statCourt: "Courts", noMember: "No players yet", join: "Join Game 🏸", leave: "Leave ❌", processing: "Sending...", update: "News" },
+            cn: { welcome: "欢迎会员 🏸", selectDay: "请选择日期", navTitle: "选手名单", statMember: "人数", statCourt: "场地", noMember: "暂无报名", join: "报名 🏸", leave: "取消 ❌", processing: "处理中...", update: "公告" }
         };
 
         function setLang(lang) {
             currentLang = lang;
-            // Update Buttons UI
             ['th', 'en', 'cn'].forEach(l => {
-                const btn = document.getElementById(`lang-${l}`);
-                btn.className = l === lang ? "px-3 py-1 rounded-full bg-slate-800 text-white" : "px-3 py-1 rounded-full text-slate-400";
+                document.getElementById(`lang-${l}`).className = l === lang ? "px-3 py-1 rounded-full bg-slate-800 text-white" : "px-3 py-1 rounded-full text-slate-400";
             });
             updateUI();
         }
@@ -157,10 +127,9 @@
             document.getElementById('txt-nav-title').innerText = t.navTitle;
             document.getElementById('txt-stat-member').innerText = t.statMember;
             document.getElementById('txt-stat-court').innerText = t.statCourt;
-            
+            document.getElementById('txt-news-title').innerText = t.update;
             document.getElementById('label-tuesday').innerText = getNextDayDisplay('วันอังคาร');
             document.getElementById('label-thursday').innerText = getNextDayDisplay('วันพฤหัสบดี');
-            
             if(selectedDay) {
                 document.getElementById('selected-day-label').innerText = getNextDayDisplay(selectedDay);
                 updateActionButton();
@@ -171,20 +140,16 @@
             const daysMap = { "วันอาทิตย์": 0, "วันจันทร์": 1, "วันอังคาร": 2, "วันพุธ": 3, "วันพฤหัสบดี": 4, "วันศุกร์": 5, "วันเสาร์": 6 };
             const daysEN = { "วันอังคาร": "Tuesday", "วันพฤหัสบดี": "Thursday" };
             const daysCN = { "วันอังคาร": "周二", "วันพฤหัสบดี": "周四" };
-
             const now = new Date();
-            let distance = (daysMap[dayName] - now.getDay() + 7) % 7;
-            if (distance === 0 && now.getHours() >= 11) distance = 7;
-            
+            let dist = (daysMap[dayName] - now.getDay() + 7) % 7;
+            if (dist === 0 && now.getHours() >= 11) dist = 7;
             const targetDate = new Date();
-            targetDate.setDate(now.getDate() + distance);
-
+            targetDate.setDate(now.getDate() + dist);
             const localeMap = { th: 'th-TH', en: 'en-US', cn: 'zh-CN' };
-            const formattedDate = targetDate.toLocaleDateString(localeMap[currentLang], { day: 'numeric', month: 'long' });
-            
-            if (currentLang === 'th') return `${dayName}ที่ ${formattedDate}`;
-            if (currentLang === 'en') return `${daysEN[dayName]}, ${formattedDate}`;
-            return `${daysCN[dayName]} (${formattedDate})`;
+            const formatted = targetDate.toLocaleDateString(localeMap[currentLang], { day: 'numeric', month: 'long' });
+            if (currentLang === 'th') return `${dayName}ที่ ${formatted}`;
+            if (currentLang === 'en') return `${daysEN[dayName]}, ${formatted}`;
+            return `${daysCN[dayName]} (${formatted})`;
         }
 
         async function initLiff() {
@@ -194,15 +159,23 @@
                 userName = profile.displayName;
                 if (profile.pictureUrl) document.getElementById('user-img').src = profile.pictureUrl;
                 setLang('th');
+                fetchGlobalData(); // ดึงข้อมูลครั้งแรก
             } else { liff.login(); }
         }
 
-        function selectDate(dayName) {
-            selectedDay = dayName;
-            updateUI();
-            document.getElementById('home-page').classList.remove('active');
-            document.getElementById('booking-page').classList.add('active');
-            fetchMembers(dayName);
+        async function fetchGlobalData() {
+            try {
+                const res = await fetch(scriptURL);
+                const data = await res.json();
+                
+                // จัดการประกาศข่าว
+                if(data.announcement) {
+                    document.getElementById('news-content').innerText = data.announcement;
+                    document.getElementById('news-section').classList.remove('hidden');
+                } else {
+                    document.getElementById('news-section').classList.add('hidden');
+                }
+            } catch(e) {}
         }
 
         async function fetchMembers(day) {
@@ -211,18 +184,15 @@
             try {
                 const response = await fetch(scriptURL);
                 const data = await response.json();
-                const filtered = data.filter(item => item.day === day);
+                const filtered = data.members.filter(item => item.day === day);
                 isBooked = filtered.some(m => m.name === userName);
                 
-                if (filtered.length === 0) {
-                    listDiv.innerHTML = `<div class="text-center text-slate-300 py-12 text-xs italic">${t.noMember}</div>`;
-                } else {
-                    listDiv.innerHTML = filtered.map((item, index) => `
-                        <div class="flex justify-between items-center py-3.5 border-b border-slate-50 px-2">
-                            <span class="text-sm ${item.name === userName ? 'font-bold text-blue-600' : 'text-slate-700'}">${index + 1}. ${item.name}</span>
-                            ${item.name === userName ? '<span class="text-[8px] bg-blue-100 text-blue-500 px-2 py-1 rounded-lg font-black">ME</span>' : ''}
-                        </div>`).join('');
-                }
+                listDiv.innerHTML = filtered.length ? filtered.map((item, index) => `
+                    <div class="flex justify-between items-center py-3.5 border-b border-slate-50 px-2">
+                        <span class="text-sm ${item.name === userName ? 'font-bold text-blue-600' : 'text-slate-700'}">${index + 1}. ${item.name}</span>
+                        ${item.name === userName ? '<span class="text-[8px] bg-blue-100 text-blue-500 px-2 py-1 rounded font-black">ME</span>' : ''}
+                    </div>`).join('') : `<div class="text-center text-slate-300 py-12 text-xs">${t.noMember}</div>`;
+                
                 document.getElementById('member-count').innerText = filtered.length;
                 document.getElementById('court-count').innerText = Math.ceil(filtered.length / 4);
                 updateActionButton();
@@ -233,13 +203,8 @@
             const btn = document.getElementById('btn-action');
             const t = i18n[currentLang];
             btn.classList.remove('btn-disabled');
-            if (isBooked) {
-                btn.innerHTML = t.leave;
-                btn.className = "w-full py-4.5 rounded-[22px] font-bold shadow-2xl bg-rose-500 text-white flex items-center justify-center gap-2 active:scale-95 transition-all";
-            } else {
-                btn.innerHTML = t.join;
-                btn.className = "w-full py-4.5 rounded-[22px] font-bold shadow-2xl bg-blue-600 text-white flex items-center justify-center gap-2 active:scale-95 transition-all";
-            }
+            btn.innerHTML = isBooked ? t.leave : t.join;
+            btn.className = `w-full py-4.5 rounded-[22px] font-bold shadow-2xl flex items-center justify-center gap-2 active:scale-95 transition-all ${isBooked ? 'bg-rose-500' : 'bg-blue-600'} text-white`;
         }
 
         async function confirmAction() {
@@ -248,17 +213,16 @@
             const action = isBooked ? 'remove' : 'add';
             btn.classList.add('btn-disabled');
             btn.innerText = t.processing;
+            await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ name: userName, day: selectedDay, action: action }) });
+            setTimeout(() => { fetchMembers(selectedDay); }, 1500);
+        }
 
-            await fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({ name: userName, day: selectedDay, action: action })
-            });
-
-            setTimeout(() => { 
-                fetchMembers(selectedDay); 
-                alert(action === 'add' ? t.alertJoin : t.alertLeave);
-            }, 1500);
+        function selectDate(dayName) {
+            selectedDay = dayName;
+            updateUI();
+            document.getElementById('home-page').classList.remove('active');
+            document.getElementById('booking-page').classList.add('active');
+            fetchMembers(dayName);
         }
 
         initLiff();
