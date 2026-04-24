@@ -1,221 +1,80 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bouncy Badminton</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <style>
-        body { font-family: 'IBM Plex Sans Thai', sans-serif; }
-        .page { display: none; }
-        .page.active { display: block; }
-        .loading-pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-        .btn-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
-    </style>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
-<body class="bg-gray-50 flex justify-center">
-
-    <div class="w-full max-w-md bg-white min-h-screen relative shadow-lg pb-32">
-        
-        <div id="home-page" class="page active">
-            <header class="p-8 text-center">
-                <div class="relative inline-block">
-                    <img id="user-img" src="https://via.placeholder.com/150" class="w-20 h-20 rounded-full border-4 border-white shadow-xl mx-auto mb-4 object-cover">
-                    <div class="absolute bottom-4 right-0 bg-green-500 w-5 h-5 rounded-full border-2 border-white"></div>
-                </div>
-                <h1 class="text-2xl font-bold text-slate-800">Bouncy Badminton</h1>
-                <p class="text-gray-400 text-xs mt-1">ยินดีต้อนรับสมาชิกทุกท่าน 🏸</p>
-            </header>
-            
-            <div class="px-6 space-y-4">
-                <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-2">เลือกวันเล่น</h2>
-                
-                <div onclick="selectDate('วันอังคาร')" class="bg-white border border-gray-100 rounded-[28px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all hover:bg-blue-50/30 group">
-                    <div>
-                        <p class="font-bold text-lg text-slate-800">วันอังคาร</p>
-                        <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00 น.</p>
-                    </div>
-                    <div class="bg-blue-50 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">→</div>
-                </div>
-
-                <div onclick="selectDate('วันพฤหัสบดี')" class="bg-white border border-gray-100 rounded-[28px] p-6 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-all hover:bg-blue-50/30 group">
-                    <div>
-                        <p class="font-bold text-lg text-slate-800">วันพฤหัสบดี</p>
-                        <p class="text-blue-500 text-sm font-semibold">09:00 - 11:00 น.</p>
-                    </div>
-                    <div class="bg-blue-50 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">→</div>
-                </div>
-            </div>
+<body class="bg-gray-100 p-4">
+    <div id="app" class="max-w-md mx-auto bg-white rounded-3xl shadow-lg p-6 min-h-[500px]">
+        <div id="home">
+            <h1 class="text-2xl font-bold mb-4 text-center border-b pb-4">Bouncy Badminton 🏸</h1>
+            <button onclick="selectDay('วันอังคาร')" class="w-full bg-blue-500 text-white p-6 rounded-2xl mb-4 font-bold">วันอังคาร (09:00 - 11:00)</button>
+            <button onclick="selectDay('วันพฤหัสบดี')" class="w-full bg-blue-500 text-white p-6 rounded-2xl font-bold">วันพฤหัสบดี (09:00 - 11:00)</button>
         </div>
 
-        <div id="booking-page" class="page">
-            <nav class="p-6 flex items-center gap-4 border-b sticky top-0 bg-white/80 backdrop-blur-md z-10">
-                <button onclick="goToPage('home')" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full active:scale-90 transition-transform text-xl">←</button>
-                <h1 class="text-lg font-bold text-slate-800">ลงชื่อเข้าเล่น</h1>
-            </nav>
-            
-            <div class="p-6 space-y-6">
-                <div class="bg-slate-900 text-white rounded-[32px] p-7 shadow-2xl relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl"></div>
-                    <h2 id="selected-day-label" class="text-2xl font-bold mb-5 tracking-tight">-</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white/10 rounded-2xl p-4 border border-white/5 backdrop-blur-sm">
-                            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-wider mb-1">สมาชิก</p>
-                            <p id="member-count" class="text-2xl font-bold">0 คน</p>
-                        </div>
-                        <div class="bg-white/10 rounded-2xl p-4 border border-white/5 backdrop-blur-sm">
-                            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-wider mb-1">จำนวนสนาม</p>
-                            <p id="court-count" class="text-2xl font-bold">0 คอร์ท</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-gray-100 rounded-[28px] p-6 shadow-sm min-h-[280px]">
-                    <div class="flex justify-between items-center mb-5 border-b border-gray-50 pb-3">
-                        <h3 class="font-bold text-slate-800">รายชื่อนักกีฬา</h3>
-                        <span class="text-[10px] bg-blue-50 text-blue-500 px-2 py-1 rounded-lg font-bold">REAL-TIME</span>
-                    </div>
-                    <div id="member-list" class="space-y-1 max-h-[300px] overflow-y-auto pr-1">
-                        <div class="loading-pulse text-center text-gray-400 py-10 text-sm">กำลังเชื่อมต่อฐานข้อมูล...</div>
-                    </div>
-                </div>
-
-                <div class="fixed bottom-8 left-0 w-full px-6 max-w-md mx-auto">
-                    <button id="btn-confirm" onclick="confirmAction()" class="w-full py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 text-white bg-slate-300">
-                        กำลังตรวจสอบสถานะ...
-                    </button>
-                </div>
-            </div>
+        <div id="booking" class="hidden">
+            <button onclick="location.reload()" class="mb-4 text-blue-500">← กลับหน้าหลัก</button>
+            <h2 id="day-title" class="text-xl font-bold mb-4 text-blue-600"></h2>
+            <div id="list" class="bg-gray-50 p-4 rounded-xl mb-6 min-h-[100px] text-sm space-y-2">กำลังโหลดรายชื่อ...</div>
+            <button id="btn-action" onclick="handleAction()" class="w-full py-4 rounded-xl font-bold text-white shadow-lg">กำลังโหลด...</button>
         </div>
-
     </div>
 
     <script>
-        const liffId = "2009890406-XhexEJs4";
-        const scriptURL = "https://script.google.com/macros/s/AKfycbyca2qQlzMtv1KDVD0HdE4sbYcW00M_oT0JM2XGHcoDNtW14ozuXhgl_GL2BUaovynE/exec";
-        
-        let userName = "Guest";
-        let selectedDay = "";
-        let isAlreadyBooked = false;
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzQ3JaC1ET5bnaHknS0-nKTjdeQGb0jj1qXuJYfw4AEV03sNUVr1LZ-5n5MCYhRxj64/exec";
+        let userName = "";
+        let currentDay = "";
+        let isBooked = false;
 
-        async function initLiff() {
+        async function init() {
+            await liff.init({ liffId: "2009890406-XhexEJs4" });
+            if (!liff.isLoggedIn()) liff.login();
+            const profile = await liff.getProfile();
+            userName = profile.displayName;
+        }
+
+        async function selectDay(day) {
+            currentDay = day;
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('booking').classList.remove('hidden');
+            document.getElementById('day-title').innerText = day;
+            loadData();
+        }
+
+        async function loadData() {
+            const listDiv = document.getElementById('list');
+            const btn = document.getElementById('btn-action');
             try {
-                await liff.init({ liffId: liffId });
-                if (liff.isLoggedIn()) {
-                    const profile = await liff.getProfile();
-                    userName = profile.displayName;
-                    if (profile.pictureUrl) document.getElementById('user-img').src = profile.pictureUrl;
-                } else {
-                    liff.login();
-                }
-            } catch (err) { console.error("LIFF Login Error:", err); }
+                const res = await fetch(scriptURL);
+                const data = await res.json();
+                const filtered = data.filter(d => d.day === currentDay);
+                isBooked = filtered.some(d => d.name === userName);
+
+                listDiv.innerHTML = filtered.length ? filtered.map((d, i) => `<div>${i+1}. ${d.name}</div>`).join('') : "ยังไม่มีคนลงชื่อ";
+                btn.innerText = isBooked ? "ถอนรายชื่อ ❌" : "ลงชื่อเข้าเล่น 🏸";
+                btn.className = isBooked ? "w-full py-4 rounded-xl font-bold text-white bg-red-500" : "w-full py-4 rounded-xl font-bold text-white bg-green-500";
+            } catch (e) { listDiv.innerHTML = "โหลดข้อมูลไม่สำเร็จ"; }
         }
 
-        async function fetchMembers(day) {
-            const listContainer = document.getElementById('member-list');
-            const btn = document.getElementById('btn-confirm');
-            btn.classList.add('btn-disabled');
-            
-            try {
-                const response = await fetch(scriptURL);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const data = await response.json();
-                
-                // ตรวจสอบโครงสร้างข้อมูล
-                const members = Array.isArray(data) ? data : (data.members || []);
-                const filtered = members.filter(item => item.day === day);
-                
-                isAlreadyBooked = filtered.some(m => m.name === userName);
-                
-                // อัปเดต UI ปุ่ม
-                btn.classList.remove('btn-disabled');
-                if (isAlreadyBooked) {
-                    btn.innerHTML = "ถอนรายชื่อออก ❌";
-                    btn.className = "w-full py-4 rounded-2xl font-bold shadow-xl bg-red-500 text-white active:scale-95 transition-all flex items-center justify-center gap-2";
-                } else {
-                    btn.innerHTML = "ลงชื่อเข้าเล่นรอบนี้ 🏸";
-                    btn.className = "w-full py-4 rounded-2xl font-bold shadow-xl bg-blue-600 text-white active:scale-95 transition-all flex items-center justify-center gap-2";
-                }
-
-                if (filtered.length === 0) {
-                    listContainer.innerHTML = `
-                        <div class="flex flex-col items-center justify-center py-10 text-gray-400">
-                            <span class="text-3xl mb-2">🏸</span>
-                            <p class="text-xs">ยังไม่มีคนลงชื่อ คุณจะเป็นคนแรก!</p>
-                        </div>`;
-                } else {
-                    listContainer.innerHTML = filtered.map((item, index) => `
-                        <div class="flex justify-between items-center py-3.5 border-b border-gray-50 last:border-0 px-2">
-                            <div class="flex items-center gap-3">
-                                <span class="text-[10px] font-bold text-gray-300 w-4">${index + 1}</span>
-                                <span class="text-sm ${item.name === userName ? 'font-bold text-blue-600' : 'text-slate-700'}">${item.name}</span>
-                            </div>
-                            ${item.name === userName ? '<span class="text-[8px] bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full font-bold">ME</span>' : ''}
-                        </div>
-                    `).join('');
-                }
-                
-                document.getElementById('member-count').innerText = filtered.length + " คน";
-                document.getElementById('court-count').innerText = Math.ceil(filtered.length / 4) + " คอร์ท";
-
-            } catch (error) {
-                console.error("Fetch Error:", error);
-                listContainer.innerHTML = `<div class="text-center text-red-400 py-10 text-xs font-bold">❌ โหลดข้อมูลไม่สำเร็จ<br><span class="font-normal text-gray-400">กรุณาลองใหม่อีกครั้ง</span></div>`;
-            }
-        }
-
-        function selectDate(day) {
-            selectedDay = day;
-            document.getElementById('selected-day-label').innerText = day;
-            goToPage('booking');
-            fetchMembers(day);
-        }
-
-        async function confirmAction() {
-            if (!userName || !selectedDay) return;
-
-            const btn = document.getElementById('btn-confirm');
-            const action = isAlreadyBooked ? 'remove' : 'add';
-            
-            btn.classList.add('btn-disabled');
+        async function handleAction() {
+            const btn = document.getElementById('btn-action');
+            btn.disabled = true;
             btn.innerText = "กำลังประมวลผล...";
+            const action = isBooked ? 'remove' : 'add';
+            
+            await fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({ name: userName, day: currentDay, action: action })
+            });
 
-            try {
-                await fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    cache: 'no-cache',
-                    body: JSON.stringify({
-                        name: userName,
-                        day: selectedDay,
-                        action: action
-                    })
-                });
-
-                // รอ 1.5 วินาทีเพื่อให้ Sheets บันทึกเสร็จแล้วรีเฟรช
-                setTimeout(() => {
-                    fetchMembers(selectedDay);
-                    alert(action === 'add' ? "ลงชื่อสำเร็จแล้ว! เจอกันในสนามครับ" : "ถอนรายชื่อเรียบร้อยแล้ว");
-                }, 1500);
-
-            } catch (error) {
-                alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
-                btn.classList.remove('btn-disabled');
-                btn.innerText = isAlreadyBooked ? "ถอนรายชื่อออก ❌" : "ลงชื่อเข้าเล่นรอบนี้ 🏸";
-            }
+            setTimeout(loadData, 1500);
         }
 
-        function goToPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId + '-page').classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        initLiff();
+        init();
     </script>
 </body>
 </html>
